@@ -27,7 +27,7 @@ var canvas = d3.select('.boardcontainer')
   .attr('height', settings.canvasHeight)
   .attr('class', 'gameboard')
 
-var circles = canvas.selectAll('circle')
+var circles = canvas.selectAll('c')
   .data(asteroids)
   .enter()
     .append('circle')
@@ -36,6 +36,7 @@ var circles = canvas.selectAll('circle')
       .attr('cy', function(d) { return Math.random() * settings.canvasHeight })
       .attr('r', settings.asteroidRadius)
       .attr('fill', 'red')
+      .attr('class', 'asteroid')
       .each(slide);
 
 var player = canvas.append('circle')
@@ -56,41 +57,32 @@ function slide() {
   })();
 };
 
-var asteroids = canvas.selectAll('circle');
+var asteroids = canvas.selectAll('.asteroid');
 var spaceShip = canvas.select('#player');
 
-var isAlreadyTouching = false;
 
 function trackMove() {
-  var playerX = spaceShip.node().x.animVal.value + 20;
-  var playerY = spaceShip.node().y.animVal.value + 20;
+  var playerX = spaceShip.node().cx.animVal.value;
+  var playerY = spaceShip.node().cy.animVal.value;
 
   asteroids.each(function() {
   var circle = d3.select(this);
     var circleX = circle[0][0].cx.animVal.value;
     var circleY = circle[0][0].cy.animVal.value;
 
-    if (isAlreadyTouching === false &&
-        Math.abs(playerX - circleX) < 40 &&
-        Math.abs(playerY - circleY) < 40 ) {
-      isAlreadyTouching = true;
-    console.log(isAlreadyTouching)
-      collisionCount--
-      d3.select('div.collisions span').text(collisionCount);
-    }
-    if (Math.abs(playerX - circleX) > 40 &&
-        Math.abs(playerY - circleY) > 40) {
-      isAlreadyTouching = false;
-    console.log(isAlreadyTouching)
+    if (Math.abs(playerX - circleX) < 30 &&
+        Math.abs(playerY - circleY) < 30 ) {
+      shield--
+      d3.select('div.shield span').text(shield);
     }
 
-    if (collisionCount <= 0) {
+    if (shield <= 0) {
       if (score > highScore) {
         highScore = score;
         d3.select('div.highscore span').text(highScore)
       }
       score = 0;
-      collisionCount = 100;
+      shield = 100;
     }
 
   })
