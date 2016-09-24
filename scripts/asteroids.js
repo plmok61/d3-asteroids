@@ -31,20 +31,20 @@ var circles = canvas.selectAll('circle')
       .attr('cy', function(d) { return Math.random() * settings.canvasHeight})
       .attr('r', settings.asteroidRadius)
       .attr('fill', 'red')
-      // .transition()
-      //   .duration(function(d) { return Math.random() * 1000 + 1000})
-      //   .ease("cubic")
-      //   .attr("cx", Math.random() * settings.canvasWidth)
-      //   .attr("cy", Math.random() * settings.canvasHeight)
-//         .each(slide);
-//
-// function slide() {
-//   var circle = d3.select(this);
-//   (function repeat() {
-//     circle = circle.transition()
-//         .duration(Math.random() * 1000 + 1000)
-//         .attr("cx", Math.random() * settings.canvasWidth)
-//         .attr("cy", Math.random() * settings.canvasHeight)
-//         .each("end", repeat);
-//   })();
-// };
+      .transition()
+        .duration(function(d) { return Math.random() * 1000 + 1000})
+        .ease("cubic")
+        .attr("cx", Math.random() * settings.canvasWidth)
+        .attr("cy", Math.random() * settings.canvasHeight)
+        .each(slide);
+
+function slide() {
+  var circle = d3.select(this);
+  (function repeat() {
+    circle = circle.transition()
+        .duration(Math.random() * 1000 + 1000)
+        .attr("cx", Math.random() * settings.canvasWidth)
+        .attr("cy", Math.random() * settings.canvasHeight)
+        .each("end", repeat);
+  })();
+};
